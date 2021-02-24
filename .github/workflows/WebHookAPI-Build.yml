@@ -6,7 +6,7 @@ on:
       - main
     types: [ opened, synchronize, reopened ]
     paths:
-      - '.github/WebHookAPI-Build.yml'
+      - '.github/workflows/WebHookAPI-Build.yml'
       - 'litmus-preview-webhook/**'
 
 jobs:
