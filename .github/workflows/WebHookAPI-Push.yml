@@ -5,6 +5,7 @@ on:
     branches:
       - main
     paths:
+      - '.github/WebHookAPI-Push.yml'
       - 'litmus-preview-webhook/**'
 
 jobs:
