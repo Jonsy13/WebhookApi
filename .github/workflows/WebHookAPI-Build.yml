@@ -2,7 +2,11 @@ name: WebHookAPI-Build
 
 on:
   pull_request:
+    branches:
+      - main
     types: [ opened, synchronize, reopened ]
+    paths:
+      - 'litmus-preview-webhook/**'
 
 jobs:
   cd:
@@ -15,6 +19,7 @@ jobs:
         run: |
           echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-      - name: Build and Push the Docker Image
+      - name: Build the Docker Image
         run: |
-          docker build . -t jonsy13/webhookapi:latest -f build/Dockerfile --build-arg SLACK_WEBHOOK_LINK="${{ secrets.SLACK_WEBHOOK_LINK }}"
+          cd litmus-preview-webhook
+          docker build . -t webhookapi:${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }} -f build/Dockerfile --build-arg SLACK_WEBHOOK_LINK="${{ secrets.SLACK_WEBHOOK_LINK }}"
