@@ -1,0 +1,21 @@
+name: WebHookAPI-Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Declare some variables
+        id: vars
+        shell: bash
+        run: |
+          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Build and Push the Docker Image
+        run: |
+          docker build . -t ${GITHUB_REPOSITORY}:${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }} .-f build/Dockerfile --build-arg ${{ secrets.SLACK_WEBHOOK_LINK }}
