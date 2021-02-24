@@ -17,6 +17,7 @@ jobs:
         id: vars
         shell: bash
         run: |
+          echo "::set-output name=repoName::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')"
           echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Docker login
@@ -24,5 +25,5 @@ jobs:
       - name: Build and Push the Docker Image
         run: |
           cd litmus-preview-webhook
-          docker build . -t ${{github.repository_owner}}/webhookapi:${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }} -f build/Dockerfile --build-arg SLACK_WEBHOOK_LINK="${{ secrets.SLACK_WEBHOOK_LINK }}"
-          docker push ${{github.repository_owner}}/webhookapi:${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
+          docker build . -t ${{steps.vars.outputs.repoName}}/webhookapi:${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }} -f build/Dockerfile --build-arg SLACK_WEBHOOK_LINK="${{ secrets.SLACK_WEBHOOK_LINK }}"
+          docker push ${{steps.vars.outputs.repoName}}/webhookapi:${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
