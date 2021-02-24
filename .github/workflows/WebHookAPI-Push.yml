@@ -17,7 +17,7 @@ jobs:
         id: vars
         shell: bash
         run: |
-          echo "::set-output name=repoName::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')"
+          echo "::set-output name=repoName::$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')"
           echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Docker login
