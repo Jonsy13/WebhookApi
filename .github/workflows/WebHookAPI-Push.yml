@@ -1,11 +1,11 @@
-name: WebHookAPI-Push
+name: WebHookApp-Push
 
 on:
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/WebHookAPI-Push.yml'
+      - '.github/workflows/WebHookApp-Push.yml'
       - 'litmus-preview-webhook/**'
 
 jobs:
@@ -24,5 +24,5 @@ jobs:
       - name: Build and Push the Docker Image
         run: |
           cd litmus-preview-webhook
-          docker build . -t ${{steps.vars.outputs.repoOwner}}/webhookapi:${{ steps.vars.outputs.img_tag }} -f build/Dockerfile --build-arg SLACK_WEBHOOK_LINK="${{ secrets.SLACK_WEBHOOK_LINK }}"
-          docker push ${{steps.vars.outputs.repoOwner}}/webhookapi:${{ steps.vars.outputs.img_tag }}
+          docker build . -t ${{steps.vars.outputs.repoOwner}}/lp-webhookapp:${{ steps.vars.outputs.img_tag }} -f build/Dockerfile --build-arg SLACK_WEBHOOK_LINK="${{ secrets.SLACK_WEBHOOK_LINK }}"
+          docker push ${{steps.vars.outputs.repoOwner}}/lp-webhookapp:${{ steps.vars.outputs.img_tag }}
