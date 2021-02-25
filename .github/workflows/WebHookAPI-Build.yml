@@ -18,7 +18,7 @@ jobs:
         id: vars
         shell: bash
         run: |
-          echo "::set output name=img_tag::$(echo 'ci')"
+          echo "::set-output name=img_tag::$(echo 'ci')"
       - name: Build the Docker Image
         run: |
           cd litmus-preview-webhook
