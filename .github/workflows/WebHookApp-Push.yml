@@ -24,5 +24,7 @@ jobs:
       - name: Build and Push the Docker Image
         run: |
           cd litmus-preview-webhook
-          docker build . -t ${{steps.vars.outputs.repoOwner}}/lp-webhookapp:${{ steps.vars.outputs.img_tag }} -f build/Dockerfile --build-arg SLACK_WEBHOOK_LINK="${{ secrets.SLACK_WEBHOOK_LINK }}"
-          docker push ${{steps.vars.outputs.repoOwner}}/lp-webhookapp:${{ steps.vars.outputs.img_tag }}
+          docker build . -t chaosnative/lp-webhookapp:main -f build/Dockerfile --build-arg SLACK_WEBHOOK_LINK="${{ secrets.SLACK_WEBHOOK_LINK }}"
+          IMAGEID=$(docker images -q chaosnative/lp-webhookapp:main )
+          docker tag ${IMAGEID} chaosnative/lp-webhookapp:ci
+          docker push chaosnative/lp-webhookapp:ci
